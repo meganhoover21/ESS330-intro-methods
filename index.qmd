@@ -18,5 +18,7 @@ bibliography: references.bib
 ## Section
 This is a simple placeholder for the manuscript's main document [@knuth84].
 
-## Cyanobacteria Blooms
+## Karenia Brevis Harmful Algal Blooms
+
+Algal blooms have become a common problem in many places, especially in the warmer summer months. Some of the forms of the cyanobacteria species can produce cyanotoxins during the concentrated time period, which can be harmful if ingested by animals and humans and even contact 
 
