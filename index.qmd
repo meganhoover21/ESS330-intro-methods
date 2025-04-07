@@ -18,4 +18,5 @@ bibliography: references.bib
 ## Section
 This is a simple placeholder for the manuscript's main document [@knuth84].
 
+## Cyanobacteria Blooms
 
