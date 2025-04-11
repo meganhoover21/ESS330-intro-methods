@@ -17,6 +17,7 @@ bibliography: references.bib
 
 ```{r}
 library(broom)
+library(visdat)
 library(tidyr)
 library(tidyverse)
 library(tidymodels)
@@ -45,15 +46,45 @@ First we'll look at the data and clean it to be usable. There are some columns t
 
 #Exploring Your Data
 
-The data was taken from NOAA. Columns consist of locations of the water samples taken, latitude, longitude, date for each day of the month and year, time of the extraction, depth of water measures, ranking of algal cells per liter, salinity of the water in parts per trillion, water temperature measured in degrees Celsius, and the object id where the sites are being tested at.The data for Texas wasn't able to be used, because it had very little data that didn't match other measurement parameters used in the Florida sample sites. The data for Florida is sufficient to use for analyzing any trends. There’s a lot of missing data for salinity levels, so a monthly average might have to be used for each month. There's also some years where there were less available data, so we chose years where there was enough data for each month. We deleted the Texas data in the excel worksheet, sorted and organized the samples by oldestto newest date. We’ll have to make an average per station, per month in our future graphs, but for now we have a general overview of the data.
+The data was taken from NOAA. Columns consist of locations of the water samples taken, latitude, longitude, date for each day of the month and year, time of the extraction, depth of water measures, ranking of algal cells per liter, salinity of the water in parts per trillion, water temperature measured in degrees Celsius, and the object id where the sites are being tested at.The data for Texas wasn't able to be used, because it had very little data that didn't match other measurement parameters used in the Florida sample sites. The data for Florida is sufficient to use for analyzing any trends. There’s a lot of missing data for salinity levels, so a monthly average might have to be used for each month. There's also some years where there were less available data, so we chose years where there was enough data for each month. We deleted the Texas data in the excel worksheet, sorted and organized the samples by oldest to newest date. We’ll have to make an average per station, per month in our future graphs, but for now we have a general overview of the data.
 ```{r}
 #read in the csv file. Already sorted to contain just 2009,2012, and 2022
 FL<-read_csv("C:/Users/samho/Desktop/ESS330/github/ESS330-intro-methods/ess330_fl_selected.csv")
 
+library(lubridate)
+#change the date format
+FL$SAMPLE_DATE <- mdy(FL$SAMPLE_DATE)
 
+library(dplyr)
+
+#filter data to show 2002
+FL_2002 <- FL %>%
+  filter(SAMPLE_DATE >= ymd("2002-01-01") & SAMPLE_DATE <= ymd("2002-12-31"))
+
+#show structure of dataset and na
+vis_dat(FL_2002)
 ```
 
+There's a lot of missing dating in the temperature, wind direction, wind direction unit, wind speed, and salinity columns. This is because the dataset is reporting on daily data. This problem can be fixed by taking averages for each month in the data.
 
+Data Visualisions
+```{r}
+#scatter plot of the cell counts and salinity with dates shown
+FL_2002 %>%
+  ggplot(aes(x = SALINITY_ppt, y = cells_per_l, color= SAMPLE_DATE, alpha= .05)) +
+  geom_point() +
+  theme_minimal()
+
+
+#graph of water temp and cell count relationship
+FL_2002 %>%
+ggplot(aes(x = Water_temp_c, y = cells_per_l, color= Water_temp_c)) +
+ geom_point() +
+labs(title = "Water Temperatures Affects of Redtide Cell Counts",
+subtitle = "Cell count measured in cells/L, water temperature measured in celsius")
+
+  
+```
 
 # Preliminary Methods
 
