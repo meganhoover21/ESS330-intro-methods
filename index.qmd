@@ -1,23 +1,34 @@
 ---
-title: ESS330-intro-methods
-authors:
+title: "ESS330-intro-methods"
+author:
   - name: Megan Hoover
     affiliation: Colorado State University
-    roles: writing
+    roles: [writing]
     corresponding: true
-    authors:
   - name: Lilly Zapalac
     affiliation: Colorado State University
-    roles: writing
-  - name: Tessa 
+    roles: [writing]
+  - name: Tessa
     affiliation: Colorado State University
-    roles: Writing
-format: html 
+    roles: [writing]
+
+format: 
+  html:
+    self-contained: true
+
+knitr:
+  opts_chunk: 
+    echo: true
+    collapse: true
+    comment: "#>"
+
 bibliography: references.bib
 csl: apa.csl
+
 ---
 
-```{r}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 library(broom)
 library(visdat)
 library(tidyr)
@@ -26,8 +37,7 @@ library(tidymodels)
 library(lubridate)
 ```
 
-## Section
-This is a simple placeholder for the manuscript's main document [@knuth84].
+
 
 ## Karenia Brevis Harmful Algal Blooms
 
@@ -35,10 +45,10 @@ This is a simple placeholder for the manuscript's main document [@knuth84].
 #Introduction, Background, and Motivation
 
 Problem Overview:  
-Karenia Algal blooms are commonly known as the red tide and are toxic blooms that produce brevetoxins, a potent neurotoxin that can cause repository problems in humans. It can also accumulate in shellfish tissues that cause Neurotoxic Shellfish Poisoning (NSP) when ingested. This harmful brevetoxin producing algae, makes it hard to detect due to it being tasteless, having no odor, and remaining stable in hot or acidic environments. The Karenia algae doesn’t have a specific growing season, which makes it harder to predict when it will occur. The blooms are most present in the summer and fall but can also be problematic in other seasons as well. There isn’t currently a clear relationship of what causes this harmful algal bloom, but there are ongoing studies that are trying to understand how different nutrients affect or initiate the bloom due to high cell concentrations being mainly found close to shores [see @U.S. National Office for Harmful Algal Blooms]  
+Karenia Algal blooms are commonly known as the red tide and are toxic blooms that produce brevetoxins, a potent neurotoxin that can cause repository problems in humans. It can also accumulate in shellfish tissues that cause Neurotoxic Shellfish Poisoning (NSP) when ingested. This harmful brevetoxin producing algae, makes it hard to detect due to it being tasteless, having no odor, and remaining stable in hot or acidic environments. The Karenia algae doesn’t have a specific growing season, which makes it harder to predict when it will occur. The blooms are most present in the summer and fall but can also be problematic in other seasons as well. There isn’t currently a clear relationship of what causes this harmful algal bloom, but there are ongoing studies that are trying to understand how different nutrients affect or initiate the bloom due to high cell concentrations being mainly found close to shores [see @ us_hab_office]  
 
 Data overview:  
-The data we’re using to better understand the red tide causing blooms, is provided by NOAA [see @ NOAA]. The excel sheet provided is from sites in Florida and Texas and contain data that span many decades. The same sites in both of the states have been tested on repeatedly throughout time, which will help to show patterns and relationships, if there’s any. It will also help to compare the different relationships between the variables. Location columns show the name of the water body that the Karenia Brevis algal are found and which city they’re found off. There’s also a column for latitude, longitude, date, time of the extraction, depth of water measures, ranking of algal cells per liter, salinity of the water in parts per trillion, water temperature measured in degrees Celsius, and the object id where the sites are being tested at. Even though there’s a lot of variables, there’s a lot of missing data for some columns.
+The data we’re using to better understand the red tide causing blooms, is provided by NOAA [see @ noaa_2014]. The excel sheet provided is from sites in Florida and Texas and contain data that span many decades. The same sites in both of the states have been tested on repeatedly throughout time, which will help to show patterns and relationships, if there’s any. It will also help to compare the different relationships between the variables. Location columns show the name of the water body that the Karenia Brevis algal are found and which city they’re found off. There’s also a column for latitude, longitude, date, time of the extraction, depth of water measures, ranking of algal cells per liter, salinity of the water in parts per trillion, water temperature measured in degrees Celsius, and the object id where the sites are being tested at. Even though there’s a lot of variables, there’s a lot of missing data for some columns.
 
 The NOAA data will allow us to compare different Florida sites to see which variables have the most impact on the growth of Karenia brevis, causing the toxic red tides. This will allow us to determine if certain areas in Florida are more susceptible to red tides. Since the location is also provided in the excel sheets, we’ll be able to make a map of areas to show different intensities of algae blooms, and then we’ll be able to determine which region has more intense red tides. We can also make a graph with dates and the number of algae cells in the water within at different location to determine if the algae blooms have been increasing or decreasing in intensity and frequency. Knowing this information can help to inform policy makers and local communities about causes of this harmful algae species, and how to implement changes to decrease the blooms. 
 
@@ -64,7 +74,9 @@ FL_2002 <- FL %>%
   filter(SAMPLE_DATE >= ymd("2002-01-01") & SAMPLE_DATE <= ymd("2002-12-31"))
 
 #show structure of dataset and na
-vis_dat(FL_2002)
+vis<-vis_dat(FL_2002)
+
+print(vis)
 ```
 
 There's a lot of missing dating in the temperature, wind direction, wind direction unit, wind speed, and salinity columns. This is because the dataset is reporting on daily data. This problem can be fixed by taking averages for each month in the data.
@@ -72,18 +84,22 @@ There's a lot of missing dating in the temperature, wind direction, wind directi
 Data Visualisions
 ```{r}
 #scatter plot of the cell counts and salinity with dates shown
-FL_2002 %>%
+FL_2002_plot1<- FL_2002 %>%
   ggplot(aes(x = SALINITY_ppt, y = cells_per_l, color= SAMPLE_DATE, alpha= .05)) +
   geom_point() +
   theme_minimal()
 
+print(FL_2002_plot1)
+
 
 #graph of water temp and cell count relationship
-FL_2002 %>%
+FL_2002_plot2<- FL_2002 %>%
 ggplot(aes(x = Water_temp_c, y = cells_per_l, color= Water_temp_c)) +
  geom_point() +
 labs(title = "Water Temperatures Affects of Redtide Cell Counts",
 subtitle = "Cell count measured in cells/L, water temperature measured in celsius")
+
+print(FL_2002_plot2)
 ```
 
 Statistical Tests:
@@ -92,13 +108,13 @@ Statistical Tests:
 multiple_regression <- lm(cells_per_l ~ Water_temp_c + SALINITY_ppt + SAMPLE_DEPTH, data = FL_2002)
 
 #p < 0.01 → very significant, p< .1 -> marginal
-summary(multiple_regression)
+print(summary(multiple_regression))
 
 # ANOVA for the data subset
 anova <- aov(cells_per_l ~ SALINITY_ppt, data = FL_2002)
 
 # p < 0.01, it's statistically significant.
-summary(anova)
+print(summary(anova))
 ```
 The multiple regression model shows that Out of the three predictor variables, salinity has the most significant relationship with cell counts. The ANOVA test also confirms that salinity is a factor in determining the cell counts of the harmful algal bloom.
 
