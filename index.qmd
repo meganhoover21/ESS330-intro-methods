@@ -57,7 +57,7 @@ FL<-read_csv("C:/Users/samho/Desktop/ESS330/github/ESS330-intro-methods/ess330_f
 #change the date format
 FL$SAMPLE_DATE <- mdy(FL$SAMPLE_DATE)
 
-l#ibrary(dplyr)
+#ibrary(dplyr)
 
 #filter data to show 2002
 FL_2002 <- FL %>%
