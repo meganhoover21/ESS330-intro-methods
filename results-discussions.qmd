@@ -1,4 +1,9 @@
 ---
+title: "results-discussions"
+format: html
+---
+
+---
 title: "ESS330-intro-methods"
 author:
   - name: Megan Hoover
@@ -77,12 +82,21 @@ FL_2002 <- FL %>%
 vis<-vis_dat(FL_2002)
 
 print(vis)
+
+#filter data to show 2002
+FL_2002 <- FL %>%
+  filter(SAMPLE_DATE >= ymd("2002-01-01") & SAMPLE_DATE <= ymd("2002-12-31"))
+
+#show structure of dataset and na
+vis<-vis_dat(FL_2002)
 ```
 
 There's a lot of missing dating in the temperature, wind direction, wind direction unit, wind speed, and salinity columns. This is because the dataset is reporting on daily data. This problem can be fixed by taking averages for each month in the data.
 
 Data Visualisions
 ```{r}
+#correlation b/w the numeric factors in the data
+FL_2002 %>% select(where(is.numeric)) %>% vis_cor()
 
 #scatter plot of the cell counts and salinity with dates shown
 FL_2002_plot1<- FL_2002 %>%
