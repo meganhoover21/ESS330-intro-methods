@@ -40,6 +40,8 @@ library(tidyr)
 library(tidyverse)
 library(tidymodels)
 library(lubridate)
+library(outliers)
+library(patchwork)
 ```
 
 
@@ -112,6 +114,10 @@ Data Visualisions
 #correlation b/w the numeric factors in the data
 FL_2002 %>% select(where(is.numeric)) %>% vis_cor()
 
+FL_2012 %>% select(where(is.numeric)) %>% vis_cor() 
+
+FL_2022 %>% select(where(is.numeric)) %>% vis_cor() 
+
 #scatter plot of the cell counts and salinity with dates shown
 FL_2002_plot1<- FL_2002 %>%
   ggplot(aes(x = SALINITY_ppt, y = cells_per_l, color= SAMPLE_DATE, alpha= .05)) +
@@ -129,6 +135,41 @@ labs(title = "Water Temperatures Affects of Redtide Cell Counts",
 subtitle = "Cell count measured in cells/L, water temperature measured in celsius")
 
 print(FL_2002_plot2)
+
+#plots showing relationship b/w salinity and cells and temp and cells
+FL_2002_salinity_temps <-FL_2002_plot1|FL_2002_plot2
+
+FL_2002_salinity_temps
+
+
+```
+
+Remove na values in each group and calculate the mean average for each month
+```{r}
+FL_2002 <- FL_2002 %>%
+  rename(date=SAMPLE_DATE)
+
+FL_2002 <- FL_2002%>%
+  mutate(month = floor_date(date, "month")) %>%
+  group_by(month) %>%
+  summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE)))
+
+FL_2012 <- FL_2012 %>%
+  rename(date=SAMPLE_DATE)
+
+FL_2012 <- FL_2012 %>% 
+  mutate(month = floor_date(date, "month")) %>%
+  group_by(month) %>%
+  summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE)))
+
+FL_2022 <- FL_2022 %>%
+  rename(date=SAMPLE_DATE)
+
+FL_2022 <- FL_2022 %>% 
+  mutate(month = floor_date(date, "month")) %>%
+  group_by(month) %>%
+  summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE)))
+
 ```
 
 Statistical Tests:
