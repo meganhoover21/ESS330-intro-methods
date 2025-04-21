@@ -83,15 +83,29 @@ vis<-vis_dat(FL_2002)
 
 print(vis)
 
-#filter data to show 2002
-FL_2002 <- FL %>%
-  filter(SAMPLE_DATE >= ymd("2002-01-01") & SAMPLE_DATE <= ymd("2002-12-31"))
+#filter data to show 2012
+FL_2012 <- FL %>%
+  filter(SAMPLE_DATE >= ymd("2012-01-01") & SAMPLE_DATE <= ymd("2012-12-31"))
 
 #show structure of dataset and na
-vis<-vis_dat(FL_2002)
+vis1<-vis_dat(FL_2002) %>%
+  print()
+
+
+#filter data to show 2022
+FL_2022 <- FL %>%
+  filter(SAMPLE_DATE >= ymd("2022-01-01") & SAMPLE_DATE <= ymd("2022-12-31"))
+
+#show structure of dataset and na
+vis2<-vis_dat(FL_2022) %>%
+  print()
 ```
 
-There's a lot of missing dating in the temperature, wind direction, wind direction unit, wind speed, and salinity columns. This is because the dataset is reporting on daily data. This problem can be fixed by taking averages for each month in the data.
+In 2002: There's a lot of missing dating in the temperature, wind direction, wind direction unit, wind speed, and salinity columns. This is because the dataset is reporting on daily data. This problem can be fixed by taking averages for each month in the data.
+
+In 2012: There's a lot of missing dating in the temperature, wind direction, wind direction unit, wind speed, and salinity columns. This is because the dataset is reporting on daily data. This problem can be fixed by taking averages for each month in the data.
+
+In 2022: There's missing data in the same columns as listed above for the other years, but salinity has less missing data.
 
 Data Visualisions
 ```{r}
