@@ -170,7 +170,16 @@ FL_2022 <- FL_2022 %>%
   group_by(month) %>%
   summarise(across(where(is.numeric), ~ mean(.x, na.rm = TRUE)))
 
+#recheck correlations
+#correlation b/w the numeric factors in the data. These look a lot better! 
+FL_2002 %>% select(where(is.numeric)) %>% vis_cor()
+
+FL_2012 %>% select(where(is.numeric)) %>% vis_cor() 
+
+FL_2022 %>% select(where(is.numeric)) %>% vis_cor() 
+
 ```
+We now see that in all three groups of data, there's a positive correlation between cell count and longitude, cell count and salinity, and a positive relationship with cell count and water temp. There's a negative relationship between cell count and longitude. 
 
 Statistical Tests:
 ```{r}
