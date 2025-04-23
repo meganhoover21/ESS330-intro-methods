@@ -42,6 +42,7 @@ library(tidymodels)
 library(lubridate)
 library(outliers)
 library(patchwork)
+library(mgcv)
 ```
 
 
@@ -226,6 +227,16 @@ anova22 <- aov(cells_per_l ~ SALINITY_ppt, data = FL_2022)
 print(anova22) 
 ```
 The same results show for Florida's 2022 data, with the p- values in the multiple regregression model being insignificant (more than .05), with salinity being slightly significant at .07. 5,999,821: This is a much larger standard deviation of residuals than in 2012 (~159k), suggesting the overall variation in cell counts is way higher in 2022 — or that the model isn’t capturing the variation well.
+
+
+Checking GAM model:
+```{r}
+gam_model <- gam(cells_per_l ~ s(SALINITY_ppt) + s(Water_temp_c) + s(SAMPLE_DEPTH), data = FL_2002)
+
+summary(gam_model)
+plot(gam_model)
+```
+The 
 
 # Preliminary Methods
 
