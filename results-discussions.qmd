@@ -181,7 +181,7 @@ FL_2022 %>% select(where(is.numeric)) %>% vis_cor()
 ```
 We now see that in all three groups of data, there's a positive correlation between cell count and longitude, cell count and salinity, and a positive relationship with cell count and water temp. There's a negative relationship between cell count and longitude. 
 
-Statistical Tests:
+Statistical Tests 2002:
 ```{r}
 #multiple regression
 multiple_regression <- lm(cells_per_l ~ Water_temp_c + SALINITY_ppt + SAMPLE_DEPTH, data = FL_2002)
@@ -195,8 +195,37 @@ anova <- aov(cells_per_l ~ SALINITY_ppt, data = FL_2002)
 # p < 0.01, it's statistically significant.
 print(summary(anova))
 ```
-The multiple regression model shows that Out of the three predictor variables, salinity has the most significant relationship with cell counts. The ANOVA test also confirms that salinity is a factor in determining the cell counts of the harmful algal bloom.
+The first round of data where it was daily for 2002 showed a multiple regression model that had salinity as the most significant relationship with cell counts. The ANOVA test also confirmed that salinity is a factor in determining the cell counts of the harmful algal bloom. For the new data that shows an avg of each month in the year 2002, there is no significance.
 
+Statistical Tests 2012:
+```{r}
+multiple_regression12 <- lm(cells_per_l ~ Water_temp_c + SALINITY_ppt + SAMPLE_DEPTH, data = FL_2012)
+
+#p < 0.05 → very significant, p< .1 -> marginal
+print(summary(multiple_regression12)) 
+
+#checking if salinity (SALINITY_ppt) significantly affects cell counts (cells_per_l) using a linear model.
+anova12 <- aov( cells_per_l~ SALINITY_ppt, data = FL_2012) 
+
+print(anova12) 
+```
+None of the p values for variables in the multiple regression model are showing any significance between cell count and a variable. They are all greater than .05. Only salinity, which shows a p value of .07 shows slight significance. The anova test also verifies this. It shows the sum of Squares (SS): This represents the variation in cells_per_l explained by salinity and the unexplained residual variation. There is more unexplainability  between salinity and cell count then there being a variation explain.
+
+~46.7 billion units of variation are explained by salinity.
+
+~254.2 billion units remain unexplained (residuals).
+
+Statistical tests 2022:
+```{r}
+multiple_regression22 <- lm(cells_per_l ~ Water_temp_c + SALINITY_ppt + SAMPLE_DEPTH, data = FL_2022)
+
+print(summary(multiple_regression22)) 
+
+anova22 <- aov(cells_per_l ~ SALINITY_ppt, data = FL_2022) 
+
+print(anova22) 
+```
+The same results show for Florida's 2022 data, with the p- values in the multiple regregression model being insignificant (more than .05), with salinity being slightly significant at .07. 5,999,821: This is a much larger standard deviation of residuals than in 2012 (~159k), suggesting the overall variation in cell counts is way higher in 2022 — or that the model isn’t capturing the variation well.
 
 # Preliminary Methods
 
