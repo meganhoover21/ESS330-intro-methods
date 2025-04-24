@@ -236,9 +236,38 @@ gam_model <- gam(cells_per_l ~ s(SALINITY_ppt) + s(Water_temp_c) + s(SAMPLE_DEPT
 summary(gam_model)
 plot(gam_model)
 ```
-The 
+
 
 # Preliminary Methods
 
 For this project we will be using NOAA data on Karenia brevis (red tide) blooms and water conditions in Florida over in 2009, 2012, and 2022.  We are using this data in order to identify any correlation between water conditions in terms of temperature, salinity, and depth impact on red tide blooms. First, we will look at the data and clean it to be usable. We’ll look at where na values are, combine the value and unit column, and make sure the data makes sense. Then we’ll create a graph of average bloom concentration over the the three different timeframes provided in the data Florida. Next, we will create a graph representing the change in red tide blooms from year to year in each sample location. Lastly, we will create maps of water condition indicators such as temperature in Celsius, salinity, and depth. The data will be tested using ANOVA to determine if there are significant differences between red tide prevalence at different Florida sites. We will also use a correlation test to identify any correlation between temperature, salinity, depth, and cell count of Karenia brevis algal blooms. Using statistical tests and visualizations, we’ll create and analyze any connections to determine possible drivers of red tide blooms. The results of this analysis will be discussed. Some supplemental data we can consider adding is data on nutrient levels and pollution in the water. The inclusion of this data would allow us to determine if nutrient and pollution run off impacts red tide blooms rather than or just more than water conditions. This way we can have a better idea if the conditions are causing algal blooms or if nutrient levels conditions are causing the blooms. If we’re unable to find enough data on this topic, we can report the possibility of other factors being the true reason for more blooms in the discussion section of our final report. A potential problem we had is some missing data across different testing sites, so we chose years that had enough data to compare cell counts to other variables. For now, our methods are focused on creating maps and graphs on water condition and red tide bloom spread in Florida with ANOVA and correlation statistical tests.   
 
+
+
+## Results and Discussion
+
+
+# Methods
+
+We took our daily data for the years 2002, 2012, and 2022 and transformed the date column to show an average of each month of that individual year. We decided to do this because there was a large amount of daily data for each year and after we ran the vis_cor code, there was a clearer relationship between several of the variables than when we did it on the daily data. When we ran the linear model regressions, we found that it was not good for explaining the patterns in the data. We knew there were correlations between some of the variables (salinity and cell count, water temp and cell count, longitude and cell count, and wind speed and cell count), but when we ran a multiple regression, it showed there wasn’t anything significant about the variables that explains cell counts and showed a lot of residual error.  
+
+We implemented the analysis on the models, but we found that the average monthly data for each year is too small of a data frame and has led to over fitting and unexplained variability in much of the results. We may need to go back to daily data for each year.
+
+The first round of data where it was daily for 2002, showed a multiple regression model that had salinity as the most significant relationship with cell counts. The ANOVA test also confirmed that salinity is a factor in determining the cell counts of the harmful algal bloom. The new data that shows an average of each month in the showed no significance. We also ran into that problem with 2012 and 2022. Underneathe the code that we used to run these analysis, we go into more detail of what the results were and what they mean.
+
+
+# Drafting the results
+
+In exploring our data with vis_dat, we found there were more NA values in the salinity and temperature columns of the 2002 and 2012 data, than there was in the 2022 data. We also found that when we plotted the relationship of the 2022 data between salinity and cell count, that there was higher numbers of the harmful algae cells when the salinity was between 35-36 ppt. There was also a visual relationship between water temperature and cell count when the water temperature was between 22-27 degrees celcius. We tested the relationships between the variables of Salinity, temperature, and sample depth, against the cell count in each year of the data. The sum of Squares (SS) in the ANOVA test represents the variation in cells_per_l explained by salinity and the unexplained residual variation. The results revealed that there was more unexplainability  between salinity and cell count then there being explainability in each group of data. 
+
+
+# Drafting the Discussion
+
+None of the p-values for variables in the multiple regression model had any significance between cell count and a variable. They were are all greater than .05. Only salinity, which had a p- value of around .07 for each group, had slight significance. The anova test also verified that. This means that our tests have not been successful in explaining the pattern of the cell counts and the other variables. We ran another model called GAM, to check if it would better explain the relationships and found that it didn't. There were too few data points from the average monthly data of each year and this led to significant over fitting. 
+
+Some limitations that we came across were being able to identify a model that explained the relationship that can be seen visually. There wasn't enough data points to show a trend when using monthly averages. We also had limitations of data because the data didn’t show any human factors on the water, like run off from agriculture or pasture, or potential industries having an impact on the water.
+Therefore, we have not be able to show good trends.  
+
+If we could find a good model to fit the complex, non-linear relationship, our results could help to predict future blooms. The question we’re trying to answer is if the karenia Brevis cell count is related to water temperature, salinity, wind speed, or if  there’s another reason behind redtide blooms. 
+
+A next step would be to find water quality of the same locations of the sample sites in the FL data, so we can see if there is a relationship of landuse affecting variables that are related to Karenia Brevis algae blooms. Does the area of the geography of the data collection site being closer to the city or downstream have a bigger impact on how intense or frequent the redtide will be? We will explore other models that are able to better fit complex relationships and possibly turn the average monthly data back into daily data and pinpoint a few sampling sites in the data that show higher algae blooms than other areas. 
